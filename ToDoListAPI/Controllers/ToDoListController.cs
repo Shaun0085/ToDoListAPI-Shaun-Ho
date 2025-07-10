@@ -62,11 +62,17 @@ namespace ToDoListAPI.Controllers
         [HttpPut("{ItemId}")]
         public async Task<IActionResult> Update(int ItemId, [FromBody] ToDoListItemDto todo)
         {
-            _logger.LogInformation("Updating Item with ItemId: {@todo.ItemId}.", todo.ItemId);
-            await _service.UpdateItem(todo);
-
-            _logger.LogInformation("Item successfully update. ItemId: {@todo.ItemId}.", todo.ItemId);
-            return Ok();
+            try
+            {
+                await _service.UpdateItem(todo);
+                _logger.LogInformation("Item successfully update. ItemId: {@todo.ItemId}.", todo.ItemId);
+                return Ok();
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogInformation(ex,"Item not found with ItemId: {@todo.ItemId}", todo.ItemId);
+                return NotFound();
+            }
         }
 
         [HttpDelete("{ItemId}")]
