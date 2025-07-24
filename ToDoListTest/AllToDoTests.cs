@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using ToDoListApplication;
 using ToDoListDomain;
@@ -8,12 +9,13 @@ namespace ToDoListTest
     {
         private Mock<IToDoListRepository> _repoMock;
         private IToDoListService _service;
+        private ILogger<ToDoListService> _logger;
 
         [SetUp]
         public void Setup()
         {
             _repoMock = new Mock<IToDoListRepository>();
-            _service = new ToDoListService(_repoMock.Object);
+            _service = new ToDoListService(_repoMock.Object, _logger);
         }
 
         [Test]
